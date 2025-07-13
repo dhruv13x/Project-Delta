@@ -61,6 +61,44 @@ from .decorators import (
     subscriber_only,
 )
 
+# In bot/handlers/user_commands.py
+
+# ... (other imports)
+from .decorators import check_banned, subscriber_only, check_if_logged_in # <-- ADD IT HERE
+# ...
+
+
+# In bot/handlers/user_commands.py
+
+# Standard library imports
+import asyncio
+import functools
+import re
+import os
+from datetime import datetime, timedelta
+
+# Third-party imports
+from google_auth_oauthlib.flow import Flow
+from sqlmodel import func, select
+from telethon import Button
+from telethon.errors import SessionPasswordNeededError
+from telethon.sessions import StringSession
+from telethon import TelegramClient
+
+# Local application imports
+from .. import config
+from ..core import process_queue_for_user
+from ..database import get_or_create_user, get_session
+from ..models import BotUser, Job
+from ..utils import (check_channel_membership, get_user_client, login_manager,
+                     send_traceable_reply, send_traceable_edit)
+
+# --- DEFINITIVE FIX: Import all required decorators ---
+from .decorators import check_banned, check_if_logged_in, log_command, owner_only, subscriber_only
+
+
+
+
 
 # ==============================================================================
 # Login Rate Limiting Class

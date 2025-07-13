@@ -66,7 +66,8 @@ def get_credentials():
     required_keys = [
         'API_ID', 'API_HASH', 'BOT_TOKEN', 'ADMIN_ID', 'DUMP_CHANNEL_ID',
         'SUPABASE_URL', 'SUPABASE_SERVICE_KEY', 'POSTGRES_DATABASE_URL',
-        'REQUIRED_CHANNEL_USERNAME', 'PAYMENT_INFO_URL', 'OWNER_USERNAME' 
+        'REQUIRED_CHANNEL_USERNAME', 'PAYMENT_INFO_URL', 'OWNER_USERNAME', 
+        'UPSTASH_REDIS_URL'
     ]
     
     optional_keys = ['OWNER_SESSION_STRING']
