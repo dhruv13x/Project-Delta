@@ -1,3 +1,21 @@
-__pycache__/
-*.pyc
+# Environment variables
 .env
+
+# Python virtual environment
+venv/
+myenv/
+
+# IDE and cache folders
+.vscode/
+__pycache__/
+*/__pycache__/
+.pytest_cache/
+
+# Session files
+*.session
+*.session-journal
+owner_session.session
+
+# Temporary files & logs
+persistent_config.json
+*.log

@@ -24,8 +24,8 @@ from bot.handlers.admin_commands import *
 from bot.handlers.settings_handler import *
 from bot.handlers.user_commands import *
 from bot.ui import *
-
 from bot.handlers.decorators import log_command
+from bot.utils import get_credentials 
 
 # Add this new function to main.py
 async def catch_all_handler(event):
@@ -44,43 +44,6 @@ logging.basicConfig(
 )
 bot.config.logger = logging.getLogger("bot")
 logging.getLogger('telethon').setLevel(logging.WARNING)
-
-
-def get_credentials():
-    """
-    Loads all necessary credentials from the detected environment.
-    """
-    source_name = ""
-    if 'google.colab' in sys.modules:
-        from google.colab import userdata
-        bot.config.logger.info("Colab environment detected. Loading secrets.")
-        source_name = "Colab Secrets"
-        source = userdata.get
-    else:
-        from dotenv import load_dotenv
-        load_dotenv()
-        bot.config.logger.info("Local environment detected. Loading secrets from .env file.")
-        source_name = ".env file"
-        source = os.environ.get
-
-    required_keys = [
-        'API_ID', 'API_HASH', 'BOT_TOKEN', 'ADMIN_ID', 'DUMP_CHANNEL_ID',
-        'SUPABASE_URL', 'SUPABASE_SERVICE_KEY', 'POSTGRES_DATABASE_URL',
-        'REQUIRED_CHANNEL_USERNAME', 'PAYMENT_INFO_URL', 'OWNER_USERNAME', 
-        'UPSTASH_REDIS_URL'
-    ]
-    
-    optional_keys = ['OWNER_SESSION_STRING']
-    
-    creds = {key: source(key) for key in required_keys + optional_keys} 
-
-    missing_keys = [key for key in required_keys if not creds.get(key)]
-    if missing_keys:
-        bot.config.logger.critical(f"CRITICAL: Missing required secrets in {source_name}: {missing_keys}")
-        return None
-
-    bot.config.logger.info("✅ All credentials loaded successfully.")
-    return creds
 
 
 def register_handlers(client: TelegramClient, command_handlers: dict):

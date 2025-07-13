@@ -13,6 +13,9 @@ from bot.core import run_job_worker
 from bot.database import get_session
 from bot.utils import get_user_client
 from bot.handlers.user_commands import get_credentials # We can reuse this
+from bot.utils import get_credentials 
+from bot.database import get_session, Job 
+
 
 # --- Setup ---
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
