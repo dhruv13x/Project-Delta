@@ -119,3 +119,28 @@ def log_callback(func):
             )
             await event.answer(f"❌ Server Error: Trace ID `{trace_id}`. Please report this.", alert=True)
     return wrapper
+
+# In bot/handlers/decorators.py
+
+def check_if_logged_in(func):
+    """
+    A decorator that checks if a user has a valid session string before
+    allowing them to execute a command.
+    """
+    @functools.wraps(func)
+    async def wrapper(event, *args, **kwargs):
+        user_id = event.sender_id
+        with get_session() as session:
+            user = session.get(BotUser, user_id)
+            
+            # Check if the user exists and has a session string
+            if not user or not user.session_string:
+                await event.reply(
+                    "❌ **You are not logged in.**\n\n"
+                    "Please use the `/login` command to connect your account first."
+                )
+                return  # Stop the function from running
+
+        # If the check passes, run the original command handler
+        return await func(event, *args, **kwargs)
+    return wrapper
